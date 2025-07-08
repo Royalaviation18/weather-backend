@@ -1,5 +1,6 @@
 package com.royalaviation.weather.service;
 
+import com.royalaviation.weather.exception.ExternalApiException;
 import com.royalaviation.weather.model.Pincode;
 import com.royalaviation.weather.model.WeatherData;
 import com.royalaviation.weather.repository.PincodeRepository;
@@ -35,7 +36,7 @@ public class GeoServiceImpl implements GeoService {
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
         if (response == null || !response.containsKey("lat") || !response.containsKey("lon")) {
-            throw new RuntimeException("Failed to fetch latitude/longitude for pincode: " + pincode);
+            throw new ExternalApiException("Failed to fetch latitude/longitude for pincode: " + pincode);
         }
 
         Double lat = Double.parseDouble(response.get("lat").toString());
@@ -60,14 +61,14 @@ public class GeoServiceImpl implements GeoService {
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
         if (response == null || !response.containsKey("main") || !response.containsKey("weather")) {
-            throw new RuntimeException("Failed to fetch weather data for pincode: " + pincode.getPincode());
+            throw new ExternalApiException("Failed to fetch weather data for pincode: " + pincode.getPincode());
         }
 
         Map<String, Object> main = (Map<String, Object>) response.get("main");
         List<Map<String, Object>> weatherList = (List<Map<String, Object>>) response.get("weather");
 
         if (main == null || weatherList == null || weatherList.isEmpty()) {
-            throw new RuntimeException("Incomplete weather data received from API.");
+            throw new ExternalApiException("Incomplete weather data received from API.");
         }
 
         Double temperature = Double.parseDouble(main.get("temp").toString());

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-@Service
 public interface WeatherService {
     WeatherResponse getWeather(String pincode, LocalDate date);
 }

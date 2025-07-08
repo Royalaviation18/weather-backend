@@ -5,12 +5,10 @@ import com.royalaviation.weather.dto.WeatherResponse;
 import com.royalaviation.weather.service.WeatherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 
 @RestController
 @RequestMapping("/weather")
@@ -21,8 +19,12 @@ public class WeatherController {
 
     @PostMapping
     public ResponseEntity<?> getWeather(@RequestBody WeatherRequest request) {
-        LocalDate date = LocalDate.parse(request.getDate());
-        WeatherResponse data = weatherService.getWeather(request.getPincode(), date);
-        return ResponseEntity.ok(data);
+        try {
+            LocalDate date = LocalDate.parse(request.getDate());
+            WeatherResponse data = weatherService.getWeather(request.getPincode(), date);
+            return ResponseEntity.ok(data);
+        } catch (DateTimeParseException e) {
+            return ResponseEntity.badRequest().body("Invalid date format. Please use YYYY-MM-DD.");
+        }
     }
 }

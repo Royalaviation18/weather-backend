@@ -129,7 +129,11 @@ This project uses JUnit 5 and Mockito for unit testing the service and controlle
 
 - Navigate to src/test
 - Right click on whichever you want to test individually and click run
--
+
+  
+### Postman collection
+
+https://api.postman.com/collections/20662715-dbb6284c-534a-4360-a9a7-8b935c5fa19c?access_key=PMAT-01JZQJ564XJNWE0TYAJQHK1F6P
 
 
 
